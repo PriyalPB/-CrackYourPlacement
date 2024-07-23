@@ -1,0 +1,22 @@
+class Solution {
+    public int findDuplicate(int[] nums) {
+        // Step 1: Initialize the n and m
+        int n = nums[0];
+        int m = nums[0];
+        
+        // Step 2: Move the n and m to find the intersection point
+        do {
+            n = nums[n];
+            m = nums[nums[m]];
+        } while (n != m);
+        
+        // Step 3: Find the entrance to the cycle (duplicate number)
+        n = nums[0];
+        while (n != m) {
+            n = nums[n];
+            m = nums[m];
+        }
+        
+        return m;
+    }
+}
