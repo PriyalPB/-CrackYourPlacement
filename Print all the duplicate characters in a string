@@ -1,0 +1,25 @@
+public class DuplicateCharacters {
+    public static void findDuplicateCharacters(String input) {
+        // Convert the string to a character array
+        char[] charArray = input.toCharArray();
+        
+        // Sort the character array
+        Arrays.sort(charArray);
+        
+        // Traverse the sorted array to find duplicates
+        System.out.println("Duplicate characters in the string are:");
+        for (int i = 1; i < charArray.length; i++) {
+            if (charArray[i] == charArray[i - 1]) {
+                System.out.print(charArray[i] + " ");
+                // Skip all occurrences of the current character to avoid printing duplicates multiple times
+                while (i < charArray.length && charArray[i] == charArray[i - 1]) {
+                    i++;
+                }
+            }
+        }
+    }
+ public static void main(String[] args) {
+        String input = "programming";
+        findDuplicateCharacters(input);
+    }
+}
