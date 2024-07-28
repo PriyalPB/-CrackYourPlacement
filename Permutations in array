@@ -1,0 +1,30 @@
+public class ArrayPermutation {
+
+        // Recursive function to generate permutations of the string
+        public static void findPermutation(String str, String ans) {
+            // Base case: when the input string is empty, print the accumulated answer
+            if (str.length() == 0) {
+                System.out.println(ans);
+                return;
+            }
+    
+            // Recursively generate permutations by fixing each character
+            for (int i = 0; i < str.length(); i++) {
+                // Pick the current character
+                char curr = str.charAt(i);
+    
+                // Create a new string by removing the current character
+                String newStr = str.substring(0, i) + str.substring(i + 1);
+    
+                // Recur with the new string and the accumulated answer
+                findPermutation(newStr, ans + curr);
+            }
+        }
+    
+        public static void main(String[] args) {
+            String str = "abc";
+            findPermutation(str, "");
+            System.out.println();
+        }
+    }
+  
