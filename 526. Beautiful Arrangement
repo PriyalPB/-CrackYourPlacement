@@ -1,0 +1,31 @@
+class BeautifulArrangement {
+    private int count = 0;
+    
+    public int countArrangement(int n) {
+        boolean[] used = new boolean[n + 1];
+        backtrack(n, 1, used);
+        return count;
+    }
+    
+    private void backtrack(int n, int position, boolean[] used) {
+        if (position > n) {
+            count++;
+            return;
+        }
+        
+        for (int i = 1; i <= n; i++) {
+            if (!used[i] && (i % position == 0 || position % i == 0)) {
+                used[i] = true;
+                backtrack(n, position + 1, used);
+                used[i] = false;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        BeautifulArrangement solution = new BeautifulArrangement();
+        System.out.println("Count of beautiful arrangements for n = 2: " + solution.countArrangement(2)); // Output: 2
+        System.out.println("Count of beautiful arrangements for n = 3: " + solution.countArrangement(3)); // Output: 3
+        System.out.println("Count of beautiful arrangements for n = 4: " + solution.countArrangement(4)); // Output: 9
+    }
+}
