@@ -1,0 +1,65 @@
+public class AllocateMinimumPages {
+
+    // Helper function to check if it is possible to allocate books with the given maxPages limit
+    private static boolean isPossible(int[] books, int n, int m, int maxPages) {
+        int studentCount = 1;
+        int currentPages = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (books[i] > maxPages) {
+                return false; // A single book has more pages than maxPages
+            }
+
+            if (currentPages + books[i] > maxPages) {
+                studentCount++;
+                currentPages = books[i];
+
+                if (studentCount > m) {
+                    return false;
+                }
+            } else {
+                currentPages += books[i];
+            }
+        }
+        return true;
+    }
+
+    // Main function to find the minimum pages allocation
+    public static int findPages(int[] books, int n, int m) {
+        if (n < m) {
+            return -1; // Not enough books to allocate to each student
+        }
+
+        int sum = 0;
+        int max = 0;
+
+        for (int i = 0; i < n; i++) {
+            sum += books[i];
+            max = Math.max(max, books[i]);
+        }
+
+        int low = max;
+        int high = sum;
+        int result = Integer.MAX_VALUE;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+
+            if (isPossible(books, n, m, mid)) {
+                result = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] books = {12, 34, 67, 90};
+        int n = books.length;
+        int m = 2;
+        System.out.println("Minimum number of pages = " + findPages(books, n, m)); // Output: 113
+    }
+}
