@@ -1,0 +1,44 @@
+class CircularTour {
+    // Function to find the starting point where the truck can start to get through
+    // the complete circle without exhausting its petrol in between.
+    int tour(int petrol[], int distance[]) {
+        int totalPetrol = 0;
+        int currentPetrol = 0;
+        int start = 0;
+
+        // Traverse each petrol pump
+        for (int i = 0; i < petrol.length; i++) {
+            totalPetrol += petrol[i] - distance[i];
+            currentPetrol += petrol[i] - distance[i];
+
+            // If current petrol balance is negative, reset starting point to next pump
+            if (currentPetrol < 0) {
+                start = i + 1;
+                currentPetrol = 0;
+            }
+        }
+
+        // Check if the total petrol balance is non-negative
+        if (totalPetrol >= 0) {
+            return start;
+        } else {
+            return -1;
+        }
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        
+        int[] petrol1 = {4, 6, 7, 4};
+        int[] distance1 = {6, 5, 3, 5};
+        System.out.println(solution.tour(petrol1, distance1)); // Output: 1
+
+        int[] petrol2 = {1, 2, 3, 4, 5};
+        int[] distance2 = {3, 4, 5, 1, 2};
+        System.out.println(solution.tour(petrol2, distance2)); // Output: 3
+
+        int[] petrol3 = {6, 3, 7, 4};
+        int[] distance3 = {4, 6, 5, 7};
+        System.out.println(solution.tour(petrol3, distance3)); // Output: 2
+    }
+}
