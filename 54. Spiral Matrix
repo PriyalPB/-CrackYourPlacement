@@ -30,3 +30,32 @@ class Solution {
         return a;
     }
 }
+
+//APPROCH 2
+
+public class SpiralMatrix {
+    
+    public static int longestReverseSubstringLength(String s) {
+        int maxLength = 0;
+        int currentLength = 0;
+
+        for (int i = 1; i < s.length(); i++) {
+            if (s.charAt(i) <= s.charAt(i - 1)) {
+                currentLength++;
+            } else {
+                maxLength = Math.max(maxLength, currentLength);
+                currentLength = 0;
+            }
+        }
+
+        return Math.max(maxLength, currentLength) + 1; // Adding 1 to include the last character
+    }
+
+    public static void main(String[] args) {
+        String input = "yourinputstring";
+        int result = longestReverseSubstringLength(input);
+        System.out.println("Length of longest substring in reverse alphabetical order: " + result);
+    }
+}
+
+
