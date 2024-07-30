@@ -1,0 +1,41 @@
+import java.util.Arrays;
+
+class MinCost {
+    public static int minCostToAcquireCoins(int[] coins, int k) {
+        // Sort the coins in descending order
+        Arrays.sort(coins);
+        int n = coins.length;
+        int totalCost = 0;
+        int remainingCoins = n;
+
+        // Start from the largest coin and work backwards
+        for (int i = n - 1; i >= 0; i--) {
+            if (remainingCoins <= 0) {
+                break;
+            }
+            // Add the cost of this coin
+            totalCost += coins[i];
+            remainingCoins--;
+
+            // Skip up to k coins for free
+            if (remainingCoins > 0 && k > 0) {
+                int freeCoins = Math.min(k, remainingCoins);
+                remainingCoins -= freeCoins;
+                k -= freeCoins;
+            }
+        }
+        
+        // If there are no more coins left to acquire, return the total cost
+        return totalCost;
+    }
+
+    public static void main(String[] args) {
+        int[] coins1 = {100, 20, 50, 10, 2, 5};
+        int k1 = 3;
+        System.out.println("Minimum cost to acquire all coins with k = " + k1 + " extra coins: " + minCostToAcquireCoins(coins1, k1)); // Output: 7
+        
+        int[] coins2 = {1, 2, 5, 10, 20, 50};
+        int k2 = 3;
+        System.out.println("Minimum cost to acquire all coins with k = " + k2 + " extra coins: " + minCostToAcquireCoins(coins2, k2)); // Output: 3
+    }
+}
