@@ -1,0 +1,32 @@
+
+    public class PartitionEqualSubsetSum {
+    
+        public static boolean canPartition(int[] nums) {
+            int totalSum = 0;
+            for (int num : nums) {
+                totalSum += num;
+            }
+    
+            // If total sum is odd, we cannot partition it into two equal subsets
+            if (totalSum % 2 != 0) {
+                return false;
+            }
+    
+            int subsetSum = totalSum / 2;
+            boolean[] dp = new boolean[subsetSum + 1];
+            dp[0] = true;
+    
+            for (int num : nums) {
+                for (int j = subsetSum; j >= num; j--) {
+                    dp[j] = dp[j] || dp[j - num];
+                }
+            }
+    
+            return dp[subsetSum];
+        }
+        public static void main(String[] args) {
+            int[] arr = {1, 5, 11, 5};
+            boolean result = canPartition(arr);
+            System.out.println("Can partition: " + result);
+        }
+    }
