@@ -1,0 +1,29 @@
+import java.util.*;
+
+public class Solution {
+    public static boolean findPairWithDifference(int[] nums, int diff) {
+        HashSet<Integer> set = new HashSet<>();
+
+        for (int num : nums) {
+            // Check if the pair exists
+            if (set.contains(num + diff) || set.contains(num - diff)) {
+                System.out.println("Pair found: (" + num + ", " + (num + diff) + ")");
+                return true;
+            }
+
+            // Add the current number to the set
+            set.add(num);
+        }
+
+        // If no pair is found
+        System.out.println("No pair found with the given difference.");
+        return false;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1, 8, 30, 40, 100};
+        int diff = 60;
+
+        findPairWithDifference(nums, diff); // Output: Pair found: (100, 40)
+    }
+}
