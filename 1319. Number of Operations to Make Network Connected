@@ -1,0 +1,52 @@
+import java.util.*;
+
+class Solution {
+    public int makeConnected(int n, int[][] connections) {
+        // If there are fewer connections than n - 1, it's impossible to connect all computers
+        if (connections.length < n - 1) {
+            return -1;
+        }
+
+        // Step 1: Build the graph using adjacency list
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+        for (int[] connection : connections) {
+            graph.get(connection[0]).add(connection[1]);
+            graph.get(connection[1]).add(connection[0]);
+        }
+
+        // Step 2: Count the number of connected components using DFS
+        boolean[] visited = new boolean[n];
+        int components = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                // Each DFS call represents a new component
+                components++;
+                dfs(graph, visited, i);
+            }
+        }
+
+        // Step 3: The number of operations needed is components - 1
+        return components - 1;
+    }
+
+    // DFS to mark all nodes in the current component as visited
+    private void dfs(List<List<Integer>> graph, boolean[] visited, int node) {
+        visited[node] = true;
+        for (int neighbor : graph.get(node)) {
+            if (!visited[neighbor]) {
+                dfs(graph, visited, neighbor);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int n = 6;
+        int[][] connections = {{0, 1}, {0, 2}, {0, 3}, {1, 4}};
+        System.out.println(solution.makeConnected(n, connections)); // Output: 1
+    }
+}
