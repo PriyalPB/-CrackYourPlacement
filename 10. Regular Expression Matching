@@ -1,0 +1,52 @@
+class Solution {
+    public boolean isMatch(String s, String p) {
+        int m = s.length();
+        int n = p.length();
+        
+        // DP table with (m+1) x (n+1) size
+        boolean[][] dp = new boolean[m + 1][n + 1];
+        
+        // Base case: empty pattern matches empty string
+        dp[0][0] = true;
+        
+        // Initialize first row (pattern vs. empty string)
+        for (int j = 1; j <= n; j++) {
+            if (p.charAt(j - 1) == '*') {
+                dp[0][j] = dp[0][j - 2];  // '*' can match zero characters
+            }
+        }
+        
+        // Fill the DP table
+        for (int i = 1; i <= m; i++) {
+            for (int j = 1; j <= n; j++) {
+                // If current characters match or pattern has '.', check diagonal
+                if (p.charAt(j - 1) == s.charAt(i - 1) || p.charAt(j - 1) == '.') {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
+                // If current pattern character is '*'
+                else if (p.charAt(j - 1) == '*') {
+                    // Check zero occurrences: dp[i][j - 2]
+                    dp[i][j] = dp[i][j - 2];
+                    
+                    // Check if previous pattern character matches current string character
+                    if (p.charAt(j - 2) == s.charAt(i - 1) || p.charAt(j - 2) == '.') {
+                        dp[i][j] = dp[i][j] || dp[i - 1][j];
+                    }
+                }
+            }
+        }
+        
+        // The result is in the bottom-right corner of the DP table
+        return dp[m][n];
+    }
+    
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        
+        // Test cases
+        System.out.println(solution.isMatch("aa", "a*"));   // Output: true
+        System.out.println(solution.isMatch("mississippi", "mis*is*p*.")); // Output: false
+        System.out.println(solution.isMatch("ab", ".*"));   // Output: true
+        System.out.println(solution.isMatch("aab", "c*a*b"));// Output: true
+    }
+}
