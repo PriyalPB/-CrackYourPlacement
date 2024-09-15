@@ -1,0 +1,30 @@
+public class SlowestKey {
+
+    public static char slowestKey(int[] releaseTimes, String keysPressed) {
+        // Initialize variables to store the longest duration and the corresponding key
+        int maxDuration = releaseTimes[0];
+        char slowestKey = keysPressed.charAt(0);
+        
+        // Traverse through the releaseTimes and keysPressed arrays
+        for (int i = 1; i < releaseTimes.length; i++) {
+            // Calculate the duration of the current key press
+            int duration = releaseTimes[i] - releaseTimes[i - 1];
+            
+            // If the current duration is longer than the max duration or
+            // if the duration is the same but the key is lexicographically larger, update the result
+            if (duration > maxDuration || (duration == maxDuration && keysPressed.charAt(i) > slowestKey)) {
+                maxDuration = duration;
+                slowestKey = keysPressed.charAt(i);
+            }
+        }
+        
+        // Return the slowest key
+        return slowestKey;
+    }
+
+    public static void main(String[] args) {
+        int[] releaseTimes = {9, 29, 49, 50};
+        String keysPressed = "cbcd";
+        System.out.println("The slowest key is: " + slowestKey(releaseTimes, keysPressed));  // Output: 'c'
+    }
+}
