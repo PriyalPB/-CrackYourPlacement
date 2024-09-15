@@ -1,0 +1,30 @@
+import java.util.*;
+
+public class FindAllDuplicates {
+
+    public static List<Integer> findDuplicates(int[] nums) {
+        List<Integer> result = new ArrayList<>();
+        
+        // Traverse through the array
+        for (int i = 0; i < nums.length; i++) {
+            // Get the absolute value of the current element
+            int index = Math.abs(nums[i]) - 1;
+            
+            // If the value at the index is negative, it means we've encountered this element before
+            if (nums[index] < 0) {
+                result.add(Math.abs(nums[i]));
+            } else {
+                // Negate the value at index to mark it as seen
+                nums[index] = -nums[index];
+            }
+        }
+        
+        // Return the result list containing the duplicates
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {4, 3, 2, 7, 8, 2, 3, 1};
+        System.out.println("Duplicates: " + findDuplicates(nums));  // Output: [2, 3]
+    }
+}
