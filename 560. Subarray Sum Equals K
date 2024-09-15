@@ -1,0 +1,34 @@
+import java.util.HashMap;
+
+public class SubarraySumEqualsK {
+
+    public static int subarraySum(int[] nums, int k) {
+        // Map to store the cumulative sum and its frequency
+        HashMap<Integer, Integer> sumMap = new HashMap<>();
+        sumMap.put(0, 1); // To handle cases where subarray starts from index 0
+        
+        int currSum = 0;
+        int count = 0;
+        
+        // Traverse through the array
+        for (int num : nums) {
+            currSum += num; // Update cumulative sum
+            
+            // Check if there is a subarray ending at the current index that sums to k
+            if (sumMap.containsKey(currSum - k)) {
+                count += sumMap.get(currSum - k); // Add the frequency of (currSum - k)
+            }
+            
+            // Update the frequency of the current cumulative sum
+            sumMap.put(currSum, sumMap.getOrDefault(currSum, 0) + 1);
+        }
+        
+        return count;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1, 1, 1};
+        int k = 2;
+        System.out.println("Number of subarrays with sum equal to k: " + subarraySum(nums, k)); // Output: 2
+    }
+}
