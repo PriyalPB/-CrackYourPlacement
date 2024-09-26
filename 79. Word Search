@@ -1,0 +1,72 @@
+public class GameOfLife {
+
+    public void gameOfLife(int[][] board) {
+        int rows = board.length;
+        int cols = board[0].length;
+
+        // Directions representing 8 possible neighbors (left, right, up, down, and diagonals)
+        int[][] directions = {
+            {0, 1}, {0, -1}, {1, 0}, {-1, 0}, 
+            {1, 1}, {1, -1}, {-1, 1}, {-1, -1}
+        };
+
+        // Step 1: Iterate over the board and mark the next state using encoding.
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                int liveNeighbors = 0;
+
+                // Count live neighbors by checking all 8 directions
+                for (int[] direction : directions) {
+                    int newRow = row + direction[0];
+                    int newCol = col + direction[1];
+
+                    // Check bounds and if the neighboring cell is currently alive (consider both 1 and -1 as alive)
+                    if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && Math.abs(board[newRow][newCol]) == 1) {
+                        liveNeighbors++;
+                    }
+                }
+
+                // Step 2: Apply the Game of Life rules and mark the changes
+                if (board[row][col] == 1 && (liveNeighbors < 2 || liveNeighbors > 3)) {
+                    // Live cell dies (underpopulation or overpopulation)
+                    board[row][col] = -1; // Mark it as was alive, but now dead
+                }
+                if (board[row][col] == 0 && liveNeighbors == 3) {
+                    // Dead cell becomes alive (reproduction)
+                    board[row][col] = 2; // Mark it as was dead, but now alive
+                }
+            }
+        }
+
+        // Step 3: Decode the board into the final state
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (board[row][col] == -1) {
+                    board[row][col] = 0; // -1 means the cell is now dead
+                } else if (board[row][col] == 2) {
+                    board[row][col] = 1; // 2 means the cell is now alive
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        GameOfLife solution = new GameOfLife();
+        int[][] board = {
+            {0, 1, 0},
+            {0, 0, 1},
+            {1, 1, 1},
+            {0, 0, 0}
+        };
+
+        solution.gameOfLife(board);
+
+        // Output the next state of the board
+        for (int[] row : board) {
+            for (int cell : row) {
+                System.out.print(cell + " ");
+            }
+            System.out.println();
+        }
+    }
+}
