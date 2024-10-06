@@ -1,0 +1,53 @@
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int x) {
+        val = x;
+        next = null;
+    }
+}
+
+public class Solution {
+    public ListNode middleNode(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        // Move slow by 1 step and fast by 2 steps until fast reaches the end
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Slow is now pointing to the middle node
+        return slow;
+    }
+
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+
+        // Test case 1: Odd number of nodes
+        ListNode head1 = new ListNode(1);
+        head1.next = new ListNode(2);
+        head1.next.next = new ListNode(3);
+        head1.next.next.next = new ListNode(4);
+        head1.next.next.next.next = new ListNode(5);
+        System.out.println(sol.middleNode(head1).val); // Output: 3
+
+        // Test case 2: Even number of nodes
+        ListNode head2 = new ListNode(1);
+        head2.next = new ListNode(2);
+        head2.next.next = new ListNode(3);
+        head2.next.next.next = new ListNode(4);
+        head2.next.next.next.next = new ListNode(5);
+        head2.next.next.next.next.next = new ListNode(6);
+        System.out.println(sol.middleNode(head2).val); // Output: 4
+
+        // Test case 3: Single node
+        ListNode head3 = new ListNode(1);
+        System.out.println(sol.middleNode(head3).val); // Output: 1
+    }
+}
