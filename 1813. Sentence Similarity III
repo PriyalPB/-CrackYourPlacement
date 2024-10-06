@@ -1,0 +1,47 @@
+public class Solution {
+    public boolean areSentencesSimilar(String sentence1, String sentence2) {
+        String[] words1 = sentence1.split(" ");
+        String[] words2 = sentence2.split(" ");
+        
+        int i = 0;  // Pointer for the start of the sentences
+        int j = 0;  // Pointer for the end of the sentences
+
+        // Find the common prefix
+        while (i < words1.length && i < words2.length && words1[i].equals(words2[i])) {
+            i++;
+        }
+
+        // Find the common suffix
+        while (j < words1.length - i && j < words2.length - i && 
+               words1[words1.length - 1 - j].equals(words2[words2.length - 1 - j])) {
+            j++;
+        }
+
+        // Check if the common prefix and suffix together cover the entire sentences
+        return i + j == Math.min(words1.length, words2.length);
+    }
+
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+        
+        // Test case 1: Prefix and suffix match
+        String sentence1 = "I love eating apples";
+        String sentence2 = "I love apples";
+        System.out.println(sol.areSentencesSimilar(sentence1, sentence2)); // Output: true
+        
+        // Test case 2: No match
+        sentence1 = "I love eating apples";
+        sentence2 = "You love apples";
+        System.out.println(sol.areSentencesSimilar(sentence1, sentence2)); // Output: false
+        
+        // Test case 3: Full match
+        sentence1 = "Hello world";
+        sentence2 = "Hello world";
+        System.out.println(sol.areSentencesSimilar(sentence1, sentence2)); // Output: true
+
+        // Test case 4: Empty sentence comparison
+        sentence1 = "Hello";
+        sentence2 = "";
+        System.out.println(sol.areSentencesSimilar(sentence1, sentence2)); // Output: false
+    }
+}
