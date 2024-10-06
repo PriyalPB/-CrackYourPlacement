@@ -1,0 +1,89 @@
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int val) {
+        this.val = val;
+    }
+}
+
+public class Solution {
+    
+    // Function to sort a single linked list
+    public ListNode sortList(ListNode head) {
+        // Base case: if the list is empty or contains a single node, it's already sorted
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        // Step 1: Split the list into two halves
+        ListNode middle = getMiddle(head);
+        ListNode rightHead = middle.next;
+        middle.next = null; // Break the link to split the list
+
+        // Step 2: Recursively sort both halves
+        ListNode left = sortList(head);
+        ListNode right = sortList(rightHead);
+
+        // Step 3: Merge the sorted halves
+        return merge(left, right);
+    }
+
+    // Function to find the middle of the linked list
+    private ListNode getMiddle(ListNode head) {
+        if (head == null) return head;
+        
+        ListNode slow = head, fast = head;
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return slow; // Slow will point to the middle node
+    }
+
+    // Function to merge two sorted linked lists
+    private ListNode merge(ListNode left, ListNode right) {
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+
+        // Compare and merge nodes from left and right lists
+        while (left != null && right != null) {
+            if (left.val <= right.val) {
+                current.next = left;
+                left = left.next;
+            } else {
+                current.next = right;
+                right = right.next;
+            }
+            current = current.next;
+        }
+
+        // Attach any remaining nodes
+        if (left != null) {
+            current.next = left;
+        } else {
+            current.next = right;
+        }
+
+        return dummy.next; // Return the merged list, skipping the dummy node
+    }
+
+    public static void main(String[] args) {
+        Solution sol = new Solution();
+        
+        // Example: Creating an unsorted single linked list
+        ListNode head = new ListNode(4);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(1);
+        head.next.next.next = new ListNode(3);
+        
+        // Sorting the single linked list
+        ListNode sortedHead = sol.sortList(head);
+
+        // Print the sorted list
+        while (sortedHead != null) {
+            System.out.print(sortedHead.val + " ");
+            sortedHead = sortedHead.next;
+        }
+        // Expected Output: 1 2 3 4
+    }
+}
