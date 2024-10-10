@@ -1,0 +1,30 @@
+public class Solution {
+    public String reverseWords(String s) {
+        // Step 1: Trim the input string to remove leading/trailing spaces
+        s = s.trim();
+
+        // Step 2: Split the string by spaces to get individual words
+        String[] words = s.split("\\s+");
+
+        // Step 3: Reverse the order of the words in the array
+        StringBuilder reversed = new StringBuilder();
+        for (int i = words.length - 1; i >= 0; i--) {
+            reversed.append(words[i]);
+            if (i != 0) {
+                reversed.append(" ");
+            }
+        }
+
+        // Step 4: Return the reversed words as a single string
+        return reversed.toString();
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        
+        // Test cases
+        System.out.println(solution.reverseWords("the sky is blue"));  // Output: "blue is sky the"
+        System.out.println(solution.reverseWords("  hello world  "));  // Output: "world hello"
+        System.out.println(solution.reverseWords("a good   example")); // Output: "example good a"
+    }
+}
