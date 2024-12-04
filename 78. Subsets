@@ -1,0 +1,28 @@
+import java.util.ArrayList;
+import java.util.List;
+
+public class Solution {
+    public static List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        generateSubsets(0, nums, new ArrayList<>(), result);
+        return result;
+    }
+
+    private static void generateSubsets(int index, int[] nums, List<Integer> current, List<List<Integer>> result) {
+        // Add the current subset to the result
+        result.add(new ArrayList<>(current));
+        
+        // Generate subsets for the rest of the elements
+        for (int i = index; i < nums.length; i++) {
+            current.add(nums[i]);            // Include the current element
+            generateSubsets(i + 1, nums, current, result); // Recursive call
+            current.remove(current.size() - 1); // Backtrack to explore other subsets
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1, 2, 3};
+        List<List<Integer>> subsets = subsets(nums);
+        System.out.println("Subsets: " + subsets);
+    }
+}
