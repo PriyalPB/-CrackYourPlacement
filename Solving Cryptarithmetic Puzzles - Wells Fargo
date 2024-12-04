@@ -1,0 +1,100 @@
+@https://www.geeksforgeeks.org/solving-cryptarithmetic-puzzles/
+  SEND
++ MORE
+--------
+ MONEY
+-------- 
+
+import java.util.*;
+
+public class CryptarithmeticSolver {
+
+    static Map<Character, Integer> letterToDigitMap = new HashMap<>();
+    static boolean[] digitAssigned = new boolean[10];
+
+    static class Puzzle {
+        String word1, word2, result;
+
+        Puzzle(String word1, String word2, String result) {
+            this.word1 = word1;
+            this.word2 = word2;
+            this.result = result;
+        }
+
+        // Checks if the current letter-to-digit mapping satisfies the puzzle
+        boolean isSatisfied(Map<Character, Integer> map) {
+            int num1 = getNumber(word1, map);
+            int num2 = getNumber(word2, map);
+            int sum = getNumber(result, map);
+            return num1 + num2 == sum;
+        }
+
+        private int getNumber(String word, Map<Character, Integer> map) {
+            int number = 0;
+            for (char c : word.toCharArray()) {
+                if (!map.containsKey(c)) return -1; // Ensure all letters are assigned
+                number = number * 10 + map.get(c);
+            }
+            return number;
+        }
+    }
+
+    // Assigns a digit to a letter if not already assigned
+    static boolean assignLetterToDigit(char letter, int digit) {
+        if (digitAssigned[digit]) return false; // Digit already in use
+        letterToDigitMap.put(letter, digit);
+        digitAssigned[digit] = true;
+        return true;
+    }
+
+    // Unassigns a digit from a letter
+    static void unassignLetterFromDigit(char letter, int digit) {
+        letterToDigitMap.remove(letter);
+        digitAssigned[digit] = false;
+    }
+
+    // Recursive backtracking function
+    static boolean exhaustiveSolve(Puzzle puzzle, String lettersToAssign) {
+        if (lettersToAssign.isEmpty()) { // All letters are assigned
+            return puzzle.isSatisfied(letterToDigitMap); // Check if solution is valid
+        }
+
+        char currentLetter = lettersToAssign.charAt(0);
+        for (int digit = 0; digit <= 9; digit++) {
+            if (assignLetterToDigit(currentLetter, digit)) {
+                if (exhaustiveSolve(puzzle, lettersToAssign.substring(1))) {
+                    return true; // Solution found
+                }
+                unassignLetterFromDigit(currentLetter, digit); // Backtrack
+            }
+        }
+
+        return false; // No solution found for this configuration
+    }
+
+    public static void main(String[] args) {
+        // Input puzzle
+        String word1 = "SEND";
+        String word2 = "MORE";
+        String result = "MONEY";
+
+        // Create Puzzle object
+        Puzzle puzzle = new Puzzle(word1, word2, result);
+
+        // Extract unique letters
+        Set<Character> uniqueLetters = new HashSet<>();
+        for (char c : (word1 + word2 + result).toCharArray()) {
+            uniqueLetters.add(c);
+        }
+
+        // Solve the puzzle
+        if (exhaustiveSolve(puzzle, String.join("", uniqueLetters))) {
+            System.out.println("Solution:");
+            for (char c : letterToDigitMap.keySet()) {
+                System.out.println(c + " = " + letterToDigitMap.get(c));
+            }
+        } else {
+            System.out.println("No solution found!");
+        }
+    }
+}
